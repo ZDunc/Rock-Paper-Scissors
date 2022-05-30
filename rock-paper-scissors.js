@@ -1,5 +1,5 @@
 function computerPlay() {
-    let num = (Math.random() * 3) + 1;
+    let num = Math.floor(Math.random() * 3) + 1;
 
     if (num === 1)
         return "rock";
@@ -11,7 +11,7 @@ function computerPlay() {
         return undefined;
 }
 
-function SingleRound(playerSelection, computerSelection = computerPlay()) {
+function singleRound(playerSelection, computerSelection = computerPlay()) {
     playerSelection = playerSelection.toLowerCase();
     
     if (playerSelection === "rock") {              // PLAYER -- rock
@@ -44,7 +44,52 @@ function SingleRound(playerSelection, computerSelection = computerPlay()) {
     } else {
         return undefined;
     }
-
-
-
 }
+
+    function game() {
+        console.log("Welcome to virtual Rock, Paper, Scissors!!!\n" +
+                    "Best out of 5 wins...Good Luck!");
+        
+        // Set counter variables
+        let playerWins = 0;
+        let computerWins = 0;
+
+        for (let i = 0; i < 5; i++) {
+            console.log("Select Rock, Paper, or Scissors");
+            let playerSelection = prompt();
+        
+            let result = singleRound(playerSelection);
+
+            // Print round results
+            if (result == undefined) {
+                console.log("Invalid entry! You lose this round");
+                computerWins++;
+                continue;
+            } else
+                console.log(result);
+
+            // Update counter variables
+            if (result === "Draw!")
+                continue;
+            else {
+                const winAnalysis = result.split(" ");
+                if (winAnalysis[1] === "Win!")
+                    playerWins++;
+                else if (winAnalysis[1] == "Lose!")
+                    computerWins++;
+                else
+                    console.log("Bug in program. Alert Zach");
+            }
+         } // end of for loop
+
+         // Print game results
+         console.log("Game has concluded.\nPlayer Wins: " + playerWins +
+                     "\nComputer Wins: " + computerWins + "\n\n");
+                     
+        if (playerWins > computerWins)
+            console.log("You win this round...bet you can't win again.");
+        else if (computerWins > playerWins)
+            console.log("Hahahahaha. I beat you!!!!!!");
+        else
+            console.log("We had a draw. AKA you lost. HA!");
+    }
