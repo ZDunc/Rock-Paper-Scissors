@@ -53,7 +53,6 @@ Don't forget to commit early & often! You can [reference the Commit Message less
    1. Feel free to create more "helper" functions if you think it would be useful.
 
 </div>
---------------------------------------------------------------
 
 # PART 2
 
