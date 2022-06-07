@@ -1,3 +1,5 @@
+// FUNCTIONS -----------------------------------------------------------------
+
 function computerPlay() {
     let num = Math.floor(Math.random() * 3) + 1;
 
@@ -11,85 +13,143 @@ function computerPlay() {
         return undefined;
 }
 
-function singleRound(playerSelection, computerSelection = computerPlay()) {
-    playerSelection = playerSelection.toLowerCase();
+function playRound(playerSelection, computerSelection = computerPlay()) {
+    //playerSelection = playerSelection.toLowerCase();
+
+    let resultString = "";
     
-    if (playerSelection === "rock") {              // PLAYER -- rock
+    // Determine winner and loser of round
+    if (playerSelection === "rock") {              // PLAYER -- chooses rock
         if (computerSelection === "paper")
-            return "You Lose! Paper beats Rock!";
+            resultString = loseAlert();
         else if (computerSelection === "scissors")
-            return "You Win! Rock beats Scissors!"
+            resultString = winAlert();
         else if (computerSelection === "rock")
-            return "Draw!";
+            resultString = drawAlert();
         else
-            return undefined;
-    } else if (playerSelection === "paper") {      // PLAYER -- paper
+            resultString = errorAlert();
+    } else if (playerSelection === "paper") {      // PLAYER -- chooses paper
         if (computerSelection === "paper")
-            return "Draw!";
+            resultString = drawAlert();
         else if (computerSelection === "scissors")
-            return "You Lose! Scissors beats Paper!"
+            resultString = loseAlert();
         else if (computerSelection === "rock")
-            return "You Win! Paper beats Rock";
+            resultString = winAlert();
         else
-            return undefined;
-    } else if (playerSelection === "scissors") {    // PLAYER -- scissors
+            resultString = errorAlert();
+    } else if (playerSelection === "scissors") {    // PLAYER -- chooses scissors
         if (computerSelection === "paper")
-            return "You Win! Scissors beats Paper!";
+            resultString = winAlert();
         else if (computerSelection === "scissors")
-            return "Draw!"
+            resultString = drawAlert();
         else if (computerSelection === "rock")
-            return "You Lose! Rock beats Scissors";
+            resultString = loseAlert();
         else
-            return undefined;
-    } else {
-        return undefined;
+            resultString = errorAlert();
+    } else {                                        // Button malfunction case
+        resultString = errorAlert();
+    }
+
+    const results = document.querySelector(".results");
+    results.textContent = resultString;
+
+    // Update counter variables
+    if (resultString=== "Draw!")
+        return;
+    else {
+        const winAnalysis = resultString.split(" ");
+        if (winAnalysis[1] === "Win!")
+            playerWins++;
+        else if (winAnalysis[1] == "Lose!")
+            computerWins++;
+        else
+            console.log("Bug in program.");
+    }
+
+    updateScore();
+}
+
+// Keeps track of scores, first to 5 wins
+function updateScore() {
+
+    // Check if game is concluded
+    if (playerWins == 5 || computerWins == 5) {
+        // Print game results
+        console.log("Game has concluded.\nPlayer Wins: " + playerWins +
+                    "\nComputer Wins: " + computerWins + "\n\n");
+        
+        // Wipe Screen
+        const screen = document.querySelector('body');
+        screen.textContent = "";
+
+        // Declare player winner or loser
+        const display = document.createElement('h1');
+
+        if (playerWins == 5) {
+            display.textContent = "You win this round...bet you can't win again.";
+        } else {
+            display.textContent = "Hahahahaha. I beat you!!!!!!";
+        }
+
+        screen.appendChild(display);
+
+        // Reset game
+        // create button, attach window.location.reload()
+        const newButton = document.createElement('button');
+        newButton.textContent = "Play Again";
+        newButton.addEventListener('click', function() {
+            window.location.reload();
+        });
+        screen.appendChild(newButton);
+
+        // ------------------------------------------------
+    } else { // update score (DOM manipulation)
+        const player = document.querySelector(".player");
+        const comp = document.querySelector(".computer");
+        player.textContent = `Puny Human: ${playerWins}`;
+        comp.textContent = `Big Strong Computer: ${computerWins}`;
     }
 }
 
-    function game() {
-        console.log("Welcome to virtual Rock, Paper, Scissors!!!\n" +
-                    "Best out of 5 wins...Good Luck!");
-        
-        // Set counter variables
-        let playerWins = 0;
-        let computerWins = 0;
+// Alert functions
+function winAlert() {
+    return "You Win!";
+}
 
-        for (let i = 0; i < 5; i++) {
-            console.log("Select Rock, Paper, or Scissors");
-            let playerSelection = prompt();
-        
-            let result = singleRound(playerSelection);
+function loseAlert() {
+    return "You Lose!";
+}
 
-            // Print round results
-            if (result == undefined) {
-                console.log("Invalid entry! You lose this round");
-                computerWins++;
-                continue;
-            } else
-                console.log(result);
+function drawAlert() {
+    return "Draw!";
+}
 
-            // Update counter variables
-            if (result === "Draw!")
-                continue;
-            else {
-                const winAnalysis = result.split(" ");
-                if (winAnalysis[1] === "Win!")
-                    playerWins++;
-                else if (winAnalysis[1] == "Lose!")
-                    computerWins++;
-                else
-                    console.log("Bug in program. Alert Zach");
-            }
-         } // end of for loop
+function errorAlert() {
+    return "";
+}
 
-         // Print game results
-         console.log("Game has concluded.\nPlayer Wins: " + playerWins +
-                     "\nComputer Wins: " + computerWins + "\n\n");
-                     
-        if (playerWins > computerWins)
-            console.log("You win this round...bet you can't win again.");
-        else if (computerWins > playerWins)
-            console.log("Hahahahaha. I beat you!!!!!!");
-        else
-            console.log("We had a draw. AKA you lost. HA!");
-    }
+function updateWins(player, comp) {
+    // query select 
+    const results = document.querySelector('.results');
+    results[0].textContent = "Puny Human: " + player;
+    results[1].textContent = "Big String Computer " + comp;
+}
+
+// RUN ---------------------------------------------------------------------
+
+// Set up event listeners for rock, paper, scissors buttons
+// (Assign them playRound function with appropriate parameter)
+const allButtons = document.querySelectorAll('.buttons');
+allButtons[0].addEventListener('click', function() {
+    playRound('rock');
+});
+allButtons[1].addEventListener('click', function() {
+    playRound('paper');
+});
+allButtons[2].addEventListener('click', function() {
+    playRound('scissors');
+});
+
+// Set counter variables
+let playerWins = 0;
+let computerWins = 0;
