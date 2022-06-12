@@ -1,5 +1,4 @@
-[Webpage Link](https://zdunc.github.io/odin-recipes/)
-
+[Webpage Link](https://zdunc.github.io/Rock-Paper-Scissors)
 
 ### Note:
 I decided not to play around much with the front-end appearance on this project so that I could focus my time on more challenging projects.
