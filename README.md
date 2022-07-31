@@ -1,4 +1,4 @@
-[Webpage Link](https://zdunc.github.io/Rock-Paper-Scissors)
+[Webpage Link](https://zdunc.github.io/rock-paper-scissors)
 
 ### Note:
 I decided not to play around much with the front-end appearance on this project so that I could focus my time on more challenging projects.
